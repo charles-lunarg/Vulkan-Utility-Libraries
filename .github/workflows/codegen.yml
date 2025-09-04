@@ -44,11 +44,12 @@ jobs:
         run: |
           git config --global user.name 'FooBar'
           git config --global user.email 'your-username@users.noreply.github.com'
+          git switch -c header_update
           git commit -am "Update Headers"
-          git push
+          git push header_update
 
       - name: Create pull request
-        run: gh pr create -B main -H run-codegen --title 'Update to latest Vulkan-Headers' --body 'Created by Github action'
+        run: gh pr create -B main --title 'Update to latest Vulkan-Headers' --body 'Created by Github action'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
