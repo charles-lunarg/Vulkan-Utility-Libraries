@@ -36,15 +36,16 @@ jobs:
           scripts/update_deps.py --dir external --no-build
           scripts/generate_source.py external/Vulkan-Headers/registry/
 
-      - name: Diff source to see if anything changed
-        id: git-diff
-        run: echo "::set-output name=git-diff::$(git diff --quiet HEAD~0 || echo true)"
+      # - name: Diff source to see if anything changed
+      #   id: git-diff
+      #   run: echo "::set-output name=git-diff::$(git diff --quiet HEAD~0 || echo true)"
 
       - name: Commit changes
         run: |
           git config --global user.name 'FooBar'
           git config --global user.email 'your-username@users.noreply.github.com'
           git commit -am "Update Headers"
+          git push
 
       - name: Create pull request
         run: gh pr create -B main -H run-codegen --title 'Update to latest Vulkan-Headers' --body 'Created by Github action'
