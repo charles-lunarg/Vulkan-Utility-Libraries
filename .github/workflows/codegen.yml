@@ -13,28 +13,23 @@ jobs:
   run_codegen:
     name: Run codegen
     runs-on: ubuntu-latest
-    env:
-        PR_NUMBER: ${{ github.event.number }}
+    permissions:
+      contents: write
+      pull-requests: write
 
     steps:
-      - uses: actions/create-github-app-token@v2
-        id: generate-token
-        with:
-          app-id: ${{ vars.APP_ID }}
-          private-key: ${{ secrets.APP_PRIVATE_KEY }}
-
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
             python-version: '3.12'
 
-      - name: Update known_good.json dependencies
-        run: python scripts/update_known_good.py
-
       - name: Check out repository code
         uses: actions/checkout@v4
         with:
           fetch-depth: 2
+
+      - name: Update known_good.json dependencies
+        run: python scripts/update_known_good.py
 
       - name: Generate source
         run: |
